@@ -124,7 +124,7 @@ ov_endZoom = function(event, g, context) {
 }
 
 function ov_dblclick(event, g, context) {
-	g.doUnzoom_();
+	g.zoomGraph.doUnzoom_();
 	g.zoomGraph.updateOptions({
 		valueRange: g.full_yrange});
 }
@@ -149,13 +149,13 @@ function ov_draw(me,initial) {
 
 function zoom_mousedown(event,g,context) {
 	context.initializeMouseDown(event, g, context);
-	if (myXOR((event.altKey || event.shiftKey),drag_mode))  {
-	this.document.body.style.cursor="move";
-	Dygraph.startPan(event, g, context);
-	}
-	else {
+	if (event.altKey || event.shiftKey)  {
 	this.document.body.style.cursor="crosshair";
 	Dygraph.startZoom(event, g, context);
+	}
+	else {
+	this.document.body.style.cursor="move";
+	Dygraph.startPan(event, g, context);
 	}
 }
 
@@ -175,17 +175,10 @@ function zoom_mouseup(event,g,context) {
 		}
 }
 
-function zoom_dblclick(c,b,a) {
-	b.doUnzoom_();
-	b.updateOptions({
-		valueRange: go.full_yrange});
-}
-
-function zoom_mouseover(event,g,context) {
-	if (drag_mode) {
-		this.document.body.style.cursor="move";}
-	else{
-		this.document.body.style.cursor="crosshair";}
+function zoom_dblclick(event, g, context) {
+	g.doUnzoom_();
+	g.updateOptions({
+		valueRange: g.overview.full_yrange});
 }
 
 function zoom_mouseout(event,g,context) {

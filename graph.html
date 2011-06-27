@@ -7,15 +7,6 @@
 		<script type="text/javascript" src="./js/dygraph.js"></script> 
 		<script type="text/javascript" src="./js/overview.js"></script>
 		<script type="text/javascript" src="./js/interaction.js"></script>
-		<script type="text/javascript">
-			function log(msg) {
-				setTimeout(function() {
-						throw new Error(msg);
-						}, 0);
-			}			
-			var drag_mode = true;
-		</script>
-
 <!-- required plugins -->
 <script type="text/javascript" src="./js/date.js"></script>
 <!--[if IE]><script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script><![endif]-->
@@ -399,8 +390,7 @@ interactionModel : {
 'mousemove' : zoom_mousemove,
 'mouseup' : zoom_mouseup,
 'dblclick': zoom_dblclick,
-'mouseout': zoom_mouseout,
-'mouseover': zoom_mouseover
+'mouseout': zoom_mouseout
 },
 xValueFormatter: Dygraph.dateString_,
 xValueParser: function(x) { return parseInt(x); },
