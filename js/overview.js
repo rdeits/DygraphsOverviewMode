@@ -147,14 +147,6 @@ function ov_draw(me,initial) {
 	}
 }
 
-// function ov_zoom(minDate,maxDate,yRanges) {
-	// go.updateOptions({
-	// dateWindow: gz.full_xrange,
-	// valueRange: gz.full_yrange});
-	// gz.updateOptions({
-	// dateWindow: [minDate,maxDate]});
-// }
-
 function zoom_mousedown(event,g,context) {
 	context.initializeMouseDown(event, g, context);
 	if (myXOR((event.altKey || event.shiftKey),drag_mode))  {
