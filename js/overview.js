@@ -85,12 +85,12 @@ ov_moveZoom = function(event, g, context) {
   g.highlight_right = end[0];
   g.highlight_bottom = start[1];
   g.highlight_top = end[1];
-	var bottom_left = g.toDomCoords(g.highlight_left, g.highlight_bottom);
-	var top_right = g.toDomCoords(g.highlight_right, g.highlight_top);
-    var ctx = g.canvas_.getContext("2d");
-	ctx.fillStyle = "rgba(128,128,128,0.33)";
-	ctx.clearRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
-	ctx.fillRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
+  var bottom_left = g.toDomCoords(g.highlight_left, g.highlight_bottom);
+  var top_right = g.toDomCoords(g.highlight_right, g.highlight_top);
+  var ctx = g.canvas_.getContext("2d");
+  ctx.fillStyle = "rgba(128,128,128,0.33)";
+  ctx.clearRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
+  ctx.fillRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
 
 }
 
@@ -195,16 +195,8 @@ function zoom_draw(me,initial) {
 	go.highlight_top = yrange[1];
 	if (initial) {
 		me.last_y_range = yrange;
-		me.last_requested_range = me.xAxisRange();
-		me.last_range_width = me.last_requested_range[1] - me.last_requested_range[0];
 	}
 	go.updateOptions({dateWindow: go.xAxisRange()});
-	var new_range = xrange[1]-xrange[0];
-	if (((xrange[0] < (me.last_requested_range[0] - me.last_range_width)) || (xrange[1] > (me.last_requested_range[1]+me.last_range_width))) || (new_range < me.last_range_width / 4) )
-	{
-		me.last_requested_range = me.xAxisRange();
-		me.last_range_width = me.last_requested_range[1]-me.last_requested_range[0];
-	}
 }
 
 function zoom_zoom(minDate,maxDate,yRanges) {
