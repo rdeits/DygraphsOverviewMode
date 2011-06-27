@@ -205,30 +205,3 @@ function zoom_zoom(minDate,maxDate,yRanges) {
 		valueRange: gz.last_y_range});}
 	else {gz.last_y_range = gz.yAxisRange();}
 }
-	
-
-function movePan(event, g, context) {
-	context.dragEndX = g.dragGetX_(event, context);
-	context.dragEndY = g.dragGetY_(event, context);
-
-	var minDate = context.draggingDate - (context.dragEndX / g.width_) * context.dateRange;
-	var maxDate = minDate + context.dateRange;
-	g.dateWindow_ = [minDate, maxDate];
-	go.highlight_left = minDate;
-	go.highlight_right = maxDate;
-
-	// y-axis scaling is automatic unless this is a full 2D pan.
-	if (context.is2DPan) {
-		// Adjust each axis appropriately.
-		var y_frac = context.dragEndY / g.height_;
-		for (var i = 0; i < g.axes_.length; i++) {
-			var axis = g.axes_[i];
-			var maxValue = axis.draggingValue + y_frac * axis.dragValueRange;
-			var minValue = maxValue - axis.dragValueRange;
-			axis.valueWindow = [ minValue, maxValue ];
-			go.highlight_bottom = minValue;
-			go.highlight_top = maxValue;
-		}
-	}
-	g.drawGraph_();
-}
