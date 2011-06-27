@@ -6,13 +6,13 @@ function ov_mousedown(event, g, context) {
 		ov_startPan(event, g, context);
 	}
 	else {
-		Dygraph.startZoom(event, g, context);
+		ov_startZoom(event, g, context);
 	}
 }
 
 function ov_mousemove(event, g, context) {
 	if(context.isZooming){
-		Dygraph.moveZoom(event, g, context);
+		ov_moveZoom(event, g, context);
 	}
 	else if (context.isPanning){
 		ov_movePan(event, g, context);
@@ -20,7 +20,9 @@ function ov_mousemove(event, g, context) {
 }
 
 function ov_mouseup(event, g, context) {
-	if(context.isZooming){Dygraph.endZoom(event, g, context)}
+	if(context.isZooming){
+		ov_endZoom(event, g, context)
+	}
 	else if (context.isPanning) {
 		ov_endPan(event, g, context);
 	}
@@ -57,7 +59,6 @@ ov_movePan = function(event, g, context) {
 	  dateWindow: [g.highlight_left, g.highlight_right],
 	  valueRange: [g.highlight_bottom, g.highlight_top]});
 
-
   g.drawGraph_();
 }
 
@@ -69,11 +70,63 @@ ov_endPan = function(event, g, context) {
   context.valueRange = null;
 }
 
+ov_startZoom = function(event, g, context) {
+  context.isZooming = true;
+}
 
-function ov_dblclick(c,b,a) {
-	b.doUnzoom_();
-	gz.updateOptions({
-		valueRange: go.full_yrange});
+ov_moveZoom = function(event, g, context) {
+  context.dragEndX = g.dragGetX_(event, context);
+  context.dragEndY = g.dragGetY_(event, context);
+
+  var end = g.toDataCoords(context.dragEndX, context.dragEndY, 0);
+  var start =  g.toDataCoords(context.dragStartX, context.dragStartY, 0);
+
+  g.highlight_left = start[0];
+  g.highlight_right = end[0];
+  g.highlight_bottom = start[1];
+  g.highlight_top = end[1];
+	var bottom_left = g.toDomCoords(g.highlight_left, g.highlight_bottom);
+	var top_right = g.toDomCoords(g.highlight_right, g.highlight_top);
+    var ctx = g.canvas_.getContext("2d");
+	ctx.fillStyle = "rgba(128,128,128,0.33)";
+	ctx.clearRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
+	ctx.fillRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
+
+}
+
+ov_endZoom = function(event, g, context) {
+  context.isZooming = false;
+  context.dragEndX = g.dragGetX_(event, context);
+  context.dragEndY = g.dragGetY_(event, context);
+  var end = g.toDataCoords(context.dragEndX, context.dragEndY, 0);
+  var start =  g.toDataCoords(context.dragStartX, context.dragStartY, 0);
+
+  g.highlight_left = start[0];
+  g.highlight_right = end[0];
+  g.highlight_bottom = start[1];
+  g.highlight_top = end[1];
+  if (g.highlight_top < g.highlight_bottom) {
+	  var swap = g.highlight_bottom;
+	  g.highlight_bottom = g.highlight_top;
+	  g.highlight_top = swap;
+  }
+  if (g.highlight_right < g.highlight_left) {
+	  var swap = g.highlight_left;
+	  g.highlight_left = g.highlight_right;
+	  g.highlight_right = swap;
+  }
+  g.zoomGraph.updateOptions({
+	  dateWindow: [g.highlight_left, g.highlight_right],
+	  valueRange: [g.highlight_bottom, g.highlight_top]});
+
+  context.dragStartX = null;
+  context.dragStartY = null;
+}
+
+function ov_dblclick(event, g, context) {
+	g.doUnzoom_();
+	g.zoomGraph.updateOptions({
+		valueRange: g.full_yrange});
 }
 
 function ov_underlay(canvas, area, g) {
@@ -94,13 +147,13 @@ function ov_draw(me,initial) {
 	}
 }
 
-function ov_zoom(minDate,maxDate,yRanges) {
-	go.updateOptions({
-	dateWindow: gz.full_xrange,
-	valueRange: gz.full_yrange});
-	gz.updateOptions({
-	dateWindow: [minDate,maxDate]});
-}
+// function ov_zoom(minDate,maxDate,yRanges) {
+	// go.updateOptions({
+	// dateWindow: gz.full_xrange,
+	// valueRange: gz.full_yrange});
+	// gz.updateOptions({
+	// dateWindow: [minDate,maxDate]});
+// }
 
 function zoom_mousedown(event,g,context) {
 	context.initializeMouseDown(event, g, context);
