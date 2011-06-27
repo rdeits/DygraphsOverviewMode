@@ -232,13 +232,3 @@ function movePan(event, g, context) {
 	}
 	g.drawGraph_();
 }
-
-function restore_view() {
-	go.doUnzoom_();
-	gz.updateOptions({
-		valueRange: go.full_yrange});
-}
-
-function myXOR(a,b) {
-	return ( a || b ) && !( a && b );
-}
