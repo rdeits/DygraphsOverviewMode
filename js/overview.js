@@ -50,48 +50,26 @@ ov_startPan = function(event, g, context) {
   context.dateRange = xRange[1] - xRange[0];
   context.valueRange = yRange[1] - yRange[0];
 
-  // Record the range of each y-axis at the start of the drag.
-  // If any axis has a valueRange or valueWindow, then we want a 2D pan.
-  context.is2DPan = false;
-  for (var i = 0; i < g.axes_.length; i++) {
-    var axis = g.axes_[i];
-    var yRange = g.yAxisRange(i);
-    axis.dragValueRange = yRange[1] - yRange[0];
-    var r = g.toDataCoords(null, context.dragStartY, i);
-    axis.draggingValue = r[1];
-    if (axis.valueWindow || axis.valueRange) context.is2DPan = true;
-  }
-
   context.draggingDate = g.highlight_left;
   context.draggingValue = g.highlight_bottom;
 };
 
 ov_movePan = function(event, g, context) {
+  var highlight_width = g.highlight_right - g.highlight_left;
+  var highlight_height = g.highlight_top - g.highlight_bottom;
   context.dragEndX = g.dragGetX_(event, context);
   context.dragEndY = g.dragGetY_(event, context);
-  highlight_width = g.highlight_right - g.highlight_left;
-  highlight_height = g.highlight_top - g.highlight_bottom;
-
-  g.highlight_left = context.draggingDate + ((context.dragEndX - context.dragStartX) / g.width_) * context.dateRange;
+  var end = g.toDataCoords(context.dragEndX, context.dragEndY, 0);
+  var start =  g.toDataCoords(context.dragStartX, context.dragStartY, 0);
+  g.highlight_left = context.draggingDate + end[0] - start[0];
   g.highlight_right = g.highlight_left + highlight_width;
-  g.highlight_bottom = context.draggingValue - ((context.dragEndY - context.dragStartY) / g.height_) * context.valueRange;
+  g.highlight_bottom = context.draggingValue + end[1] - start[1];
   g.highlight_top = g.highlight_bottom + highlight_height;
 
   g.zoomGraph.updateOptions({
 	  dateWindow: [g.highlight_left, g.highlight_right],
 	  valueRange: [g.highlight_bottom, g.highlight_top]});
 
-  // // y-axis scaling is automatic unless this is a full 2D pan.
-  // if (context.is2DPan) {
-	// // Adjust each axis appropriately.
-	// var y_frac = context.dragEndY / g.height_;
-	// for (var i = 0; i < g.axes_.length; i++) {
-	  // var axis = g.axes_[i];
-	  // var maxValue = axis.draggingValue + y_frac * axis.dragValueRange;
-	  // var minValue = maxValue - axis.dragValueRange;
-	  // axis.valueWindow = [ minValue, maxValue ];
-	// }
-  // }
 
   g.drawGraph_();
 }
