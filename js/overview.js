@@ -29,7 +29,9 @@ function ov_mouseup(event, g, context) {
 }
 
 function ov_mouseout(event, g, context) {
-	if(context.isZooming){context.dragEndX=null;context.dragEndY=null}
+	context.dragEndX=null;
+	context.dragEndY=null;
+	// if(context.isZooming){context.dragEndX=null;context.dragEndY=null}
 }
 
 ov_startPan = function(event, g, context) {
@@ -64,7 +66,6 @@ ov_movePan = function(event, g, context) {
 
 ov_endPan = function(event, g, context) {
   context.isPanning = false;
-  context.is2DPan = false;
   context.draggingDate = null;
   context.dateRange = null;
   context.valueRange = null;
@@ -89,7 +90,7 @@ ov_moveZoom = function(event, g, context) {
   var top_right = g.toDomCoords(g.highlight_right, g.highlight_top);
   var ctx = g.canvas_.getContext("2d");
   ctx.fillStyle = "rgba(128,128,128,0.33)";
-  ctx.clearRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
+  ctx.clearRect(0, 0, g.width_, g.height_);
   ctx.fillRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
 
 }
@@ -150,11 +151,9 @@ function ov_draw(me,initial) {
 function zoom_mousedown(event,g,context) {
 	context.initializeMouseDown(event, g, context);
 	if (event.altKey || event.shiftKey)  {
-	this.document.body.style.cursor="crosshair";
 	Dygraph.startZoom(event, g, context);
 	}
 	else {
-	this.document.body.style.cursor="move";
 	Dygraph.startPan(event, g, context);
 	}
 }
