@@ -1,0 +1,78 @@
+<html>	<head><title>Overview + Zoom</title>
+		<script type="text/javascript"
+			src="http://www.dygraphs.com/dygraph-combined.js"></script>
+		<script type="text/javascript" src="http://www.dygraphs.com/tests/data.js"></script> 
+	</head>
+	<body> 
+	<table>
+	<tr>
+	<td>
+	<div id="zoomgraph"></div>
+	</td>
+	</tr>
+	<tr>
+	<td>
+	<div id="overview" style="height:100px;"></div>
+	</td>
+	</tr>
+	</table>
+			<script type="text/javascript">
+			var highlight_left = 0;
+			var highlight_right = 0;
+			var highlight_bottom = 0;
+			var highlight_top = 0;
+			var top_right
+			var bottom_left
+			var xrange
+			var yrange
+			var full_xrange
+			var full_yrange
+			go = new Dygraph(document.getElementById("overview"),
+					data,
+					{underlayCallback: function(canvas, area, g) {
+					bottom_left = g.toDomCoords(highlight_left, highlight_bottom);
+					top_right = g.toDomCoords(highlight_right, highlight_top);
+					canvas.fillStyle = "rgba(255,255,102,1.0)";
+					canvas.fillRect(bottom_left[0],bottom_left[1],top_right[0]-bottom_left[0],top_right[1]-bottom_left[1]);
+					},
+drawCallback: function(me,initial) {
+if (!initial) {return}
+full_xrange = me.xAxisRange();
+full_yrange = me.yAxisRange();
+},
+zoomCallback: function(minDate,maxDate,yRanges) {
+go.updateOptions({
+dateWindow: full_xrange,
+valueRange: full_yrange});
+gz.updateOptions({
+dateWindow: [minDate,maxDate]});
+},
+labelsDivWidth: 0,
+	});
+gz = new Dygraph(document.getElementById("zoomgraph"),
+		data,
+		{
+drawCallback: function(me,initial) {
+xrange = me.xAxisRange();
+yrange = me.yAxisRange();
+highlight_left = xrange[0];
+highlight_right = xrange[1];
+highlight_bottom = yrange[0];
+highlight_top = yrange[1];
+go.updateOptions({
+dateWindow: go.xAxisRange()
+});
+}
+});
+
+function updateRange() {
+	var startTime = Date.parse(document.dateSelect.startDate.value);
+	var endTime = Date.parse(document.dateSelect.endDate.value);
+	alert('start:'+startTime+'stop:'+endTime);
+}
+</script> 
+</body>
+</html>
+
+
+
