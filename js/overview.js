@@ -31,10 +31,21 @@ function ov_mouseout(event, g, context) {
 }
 
 // function ov_mouseover(event,g,context) {
-	// var xRange = g.xAxisRange();
-	// var yRange = g.yAxisRange(0);
-	// var graph_x = context.px / g.width_ * (xRange[1]-xRange[0]) + xRange[0];
-	// var graph_y = context.py / g.height_ * (yRange[1]-yRange[0]) + yRange[0];
+	// var bottom_left = g.toDomCoords(g.highlight_left, g.highlight_bottom);
+	// var top_right = g.toDomCoords(g.highlight_right, g.highlight_top);
+	// context.px = Dygraph.findPosX(g.canvas_);
+	// context.py = Dygraph.findPosY(g.canvas_);
+	// context.dragStartX = g.dragGetX_(event, context);
+	// context.dragStartY = g.dragGetY_(event, context);
+	// if (((context.dragStartX > bottom_left[0]) && (context.dragStartY < bottom_left[1])) && ((context.dragStartX < top_right[0]) && (context.dragStartY > top_right[1]))) {
+		// this.document.body.style.cursor="move";
+	// }
+	// else {
+		// this.document.body.style.cursor="crosshair";
+	// }
+	// assert(0)
+// }
+	
 	// if (((graph_y > g.highlight_bottom) && (graph_y < g.highlight_top)) && ((graph_x > g.highlight_left) && (graph_x < g.highlight_right))) {
 		// this.document.body.style.cursor="move";
 	// }
