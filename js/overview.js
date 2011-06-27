@@ -2,7 +2,7 @@ function ov_mousedown(event, g, context) {
 	context.initializeMouseDown(event, g, context);
 	var bottom_left = g.toDomCoords(g.highlight_left, g.highlight_bottom);
 	var top_right = g.toDomCoords(g.highlight_right, g.highlight_top);
-	if (((context.dragStartX > bottom_left[0]) && (context.dragStartY < bottom_left[1])) && ((context.dragStartX < top_right[0]) && (context.dragStartY > top_right[1]))) {
+	if ((((context.dragStartX > bottom_left[0]) && (context.dragStartY < bottom_left[1])) && ((context.dragStartX < top_right[0]) && (context.dragStartY > top_right[1]))) && !(event.altKey || event.shiftKey)) {
 		ov_startPan(event, g, context);
 	}
 	else {
