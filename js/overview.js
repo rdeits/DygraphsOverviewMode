@@ -141,10 +141,6 @@ function ov_draw(me,initial) {
 	if (initial){
 	me.full_xrange = me.xAxisRange();
 	me.full_yrange = me.yAxisRange();
-	me.highlight_left = 0;
-	me.highlight_right = 0;
-	me.highlight_bottom = 0;
-	me.highlight_top = 0;
 	}
 }
 
