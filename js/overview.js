@@ -31,7 +31,6 @@ function ov_mouseup(event, g, context) {
 function ov_mouseout(event, g, context) {
 	context.dragEndX=null;
 	context.dragEndY=null;
-	// if(context.isZooming){context.dragEndX=null;context.dragEndY=null}
 }
 
 ov_startPan = function(event, g, context) {

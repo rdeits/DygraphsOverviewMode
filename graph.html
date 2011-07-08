@@ -18,11 +18,16 @@
 				<td>
 					<div id="zoomgraph" style="width:500px;height=400px" align=left>
 				</td>
+				<td>
+					Click and drag this graph to pan. Shift-click and drag to zoom. The yellow region in the lower graph stays linked to the view shown in this graph.
+				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="overview" style="width:500px;height:100px">
 				</td>
+				<td>
+					Click and drag within the yellow box to move the view region of the upper graph. Click and drag outside the yellow box (or shift-click and drag within the box) to define a new region for the upper graph. 
 			</tr>
 		</table>
 <script type="text/javascript">
@@ -90,7 +95,7 @@ interactionModel: {
 'mousemove':ov_mousemove,
 'mouseup':ov_mouseup,
 'mouseout':ov_mouseout,
-'dblclick':ov_dblclick,
+'dblclick':ov_dblclick
 }
 }
 );
